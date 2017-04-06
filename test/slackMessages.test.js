@@ -1,3 +1,4 @@
+/* eslint no-unused-expressions: 0 */
 import * as slackMessages from '../src/slackMessages';
 
 describe('Slack Messages', () => {
@@ -13,6 +14,7 @@ describe('Slack Messages', () => {
             expect(message).to.deep.equal(expectedMessage);
         });
     });
+
     describe('attachmentMessage()', () => {
         const defaultTitle = 'default title';
         const defaultText = 'default text';
@@ -104,6 +106,26 @@ describe('Slack Messages', () => {
             );
 
             expect(message.attachments[0].fields).to.equal(givenFields);
+        });
+
+        it('message should not contain pretext by default', () => {
+            const message = slackMessages.attachmentMessage(
+                defaultTitle,
+                defaultText,
+                defaultFields
+            );
+
+            expect(message.attachments[0].pretext).to.be.undefined;
+        });
+
+        it('message should allow markdown in pretext', () => {
+            const message = slackMessages.attachmentMessage(
+                defaultTitle,
+                defaultText,
+                defaultFields
+            );
+
+            expect(message.attachments[0].mrkdwn_in).to.deep.equal(['pretext']);
         });
     });
 });

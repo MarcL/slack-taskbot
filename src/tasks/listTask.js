@@ -1,4 +1,4 @@
-import {attachmentMessage} from '../slackMessages';
+import {attachmentMessage, defaultColour} from '../slackMessages';
 
 const listTask = {
     description: 'Lists all tasks',
@@ -16,7 +16,9 @@ const listTask = {
         const attachment = attachmentMessage(
             'Command List',
             'A list of all the commands that I respond to',
-            fields
+            fields,
+            defaultColour,
+            '_Hello, I\'m here to serve_'
         );
         bot.respondInChannel(message.channel, '', attachment);
     }
