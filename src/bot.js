@@ -1,5 +1,5 @@
 import SlackBot from 'slackbots';
-import config from './config/config';
+import config from '../config/config';
 
 const isChatMessage = message => (message.type === 'message' && Boolean(message.text));
 const isChannelConvesation = message => (typeof message.channel === 'string' && message.channel[0] === 'C');
