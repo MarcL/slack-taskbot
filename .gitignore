@@ -34,5 +34,5 @@ node_modules
 *.pyc
 
 # Ignore generated files
-/build
+lib
 /config/config.js

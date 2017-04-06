@@ -5,8 +5,22 @@ const isChatMessage = message => (message.type === 'message' && Boolean(message.
 const isChannelConvesation = message => (typeof message.channel === 'string' && message.channel[0] === 'C');
 const isMessageFromMe = (message, botId) => message.user === botId;
 const isMessageForMe = (message, botId) => message.text.indexOf(`@${botId}`) > -1;
-const isBot = (user) => user.is_bot;
+const isBot = user => user.is_bot;
 const isUserBot = (user, botName) => user.real_name === botName;
+const isBotMessage = (message, botUserId) =>
+    isChatMessage(message) &&
+    isChannelConvesation(message) &&
+    !isMessageFromMe(message, botUserId)
+    && isMessageForMe(message, botUserId);
+
+const respondInChannel = (bot, channelId, message, params = {}) => {
+    bot.postMessage(channelId, message, params);
+};
+
+const respondToUserInChannel = (bot, channelId, userId, message, params = {}) => {
+    const userMessage = `<@${userId}>\n${message}`;
+    respondInChannel(bot, channelId, userMessage, params);
+};
 
 const tasks = [
     {
@@ -27,14 +41,6 @@ const tasks = [
         }
     }
 ];
-const respondToUserInChannel = (bot, channelId, userId, message, params = {}) => {
-    const userMessage = `<@${userId}>\n${message}`;
-    respondInChannel(bot, channelId, userMessage, params);
-};
-
-const respondInChannel = (bot, channelId, message, params = {}) => {
-    bot.postMessage(channelId, message, params);
-};
 
 const startBot = () => {
     const bot = new SlackBot(config.slackConfig);
@@ -56,7 +62,7 @@ const startBot = () => {
         bot.getUsers()
             .then((users) => {
                 const botUsers = users.members.filter(isBot);
-                botUser = botUsers.find((user) => isUserBot(user, config.slackConfig.name));
+                botUser = botUsers.find(user => isUserBot(user, config.slackConfig.name));
             })
             .catch((error) => {
                 console.log('error', error);
@@ -64,14 +70,10 @@ const startBot = () => {
     });
 
     bot.on('message', (message) => {
-        if (isChatMessage(message) &&
-            isChannelConvesation(message) &&
-            !isMessageFromMe(message, botUser.id)
-            && isMessageForMe(message, botUser.id)) {
-                respondToTask(message);
+        if (isBotMessage(message, botUser.id)) {
+            respondToTask(message);
         }
     });
 };
-
 
 export default startBot;
