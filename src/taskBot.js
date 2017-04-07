@@ -16,7 +16,6 @@ const isBotMessage = (message, botUserId) =>
 class TaskBot extends Bot {
     constructor(settings = {}, tasks = []) {
         super(settings);
-
         this.user = null;
         this.name = settings.name || 'TaskBot';
 
@@ -25,26 +24,34 @@ class TaskBot extends Bot {
 
     start() {
         this.on('start', this.onStart);
-        this.on('message', this.onMessage);
+        this.on('message', this.slackMessageHandler);
     }
 
     onStart() {
         this.findBotUser();
     }
 
-    onMessage(message) {
-        if (isBotMessage(message, this.user.id)) {
+    slackMessageHandler(message) {
+        if (this.user && isBotMessage(message, this.user.id)) {
             this.taskManager.handleMessage(message);
         }
     }
 
+    // TODO : Work out the best way to store bot user
     findBotUser() {
         this.getUsers()
             .then((users) => {
                 const botUsers = users.members.filter(isBot);
                 this.user = botUsers.find(user => isUserBot(user, this.name));
-
-                this.postMessageToChannel('general', `:tada: ${this.user.real_name} is reporting for duty!`);
+                if (!this.user) {
+                    this.postMessageToChannel('general', `:negative_squared_cross_mark: Cannot find bot user : ${this.name}!`);
+                    this.postMessageToChannel('general', '_I cannot respond to messages until this is resolved_');
+                } else {
+                    this.postMessageToChannel('general', `:tada: ${this.user.real_name} is reporting for duty!`);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
             });
     }
 
