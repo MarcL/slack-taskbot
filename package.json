@@ -2,12 +2,13 @@
   "name": "slack-taskbot",
   "version": "0.1.0",
   "description": "Slack task bot",
-  "main": "lib/index.js",
+  "main": "lib/taskBot.js",
   "scripts": {
     "build": "babel src -d lib",
     "start": "npm run build && node .",
     "lint": "eslint src",
-    "test": "mocha"
+    "test": "mocha",
+    "watch": "watch 'npm run build' src"
   },
   "author": "Marc Littlemore <marc.littlemore@gmail.com> (http://www.marclittlemore.com)",
   "license": "MIT",
@@ -21,7 +22,8 @@
     "eslint-plugin-import": "~2.2.0",
     "mocha": "~3.2.0",
     "sinon": "~2.1.0",
-    "sinon-chai": "~2.9.0"
+    "sinon-chai": "~2.9.0",
+    "watch": "~1.0.2"
   },
   "dependencies": {
     "slackbots": "~1.0.2"
