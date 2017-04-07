@@ -1,4 +1,5 @@
 import Bot from 'slackbots';
+import smb from 'slack-message-builder';
 import TaskManager from './taskManager';
 
 const isChatMessage = message => (message.type === 'message' && Boolean(message.text));
@@ -33,7 +34,12 @@ class TaskBot extends Bot {
 
     slackMessageHandler(message) {
         if (this.user && isBotMessage(message, this.user.id)) {
-            this.taskManager.handleMessage(message);
+            if (!this.taskManager.handleMessage(message)) {
+                const responseMessage = smb()
+                    .text(':question: _I\'m sorry but I don\'t understand that command._')
+                    .json();
+                this.respondInChannel(message.channel, responseMessage);
+            }
         }
     }
 
@@ -55,13 +61,11 @@ class TaskBot extends Bot {
             });
     }
 
-    respondInChannel(channelId, message, params = {}) {
-        this.postMessage(channelId, message, params);
-    }
-
-    respondToUserInChannel(channelId, userId, message, params = {}) {
-        const userMessage = `<@${userId}>\n${message}`;
-        this.respondInChannel(channelId, userMessage, params);
+    respondInChannel(channelId, params = {}) {
+        return this.postMessage(channelId, '', params)
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }
 

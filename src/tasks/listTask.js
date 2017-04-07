@@ -19,7 +19,7 @@ const showTaskList = (options) => {
         defaultColour,
         '_Hello, I\'m here to serve_'
     );
-    bot.respondInChannel(message.channel, '', attachment);
+    bot.respondInChannel(message.channel, attachment);
 };
 
 const listTask = {

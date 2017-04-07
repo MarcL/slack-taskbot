@@ -18,6 +18,8 @@ class TaskManager {
     }
 
     handleMessage(message) {
+        let handledMessage = false;
+
         this.tasks.forEach((task) => {
             if (shouldRespondToMessage(message, task.commands)) {
                 const messageArguments = getMessageArguments(message, this.bot);
@@ -29,8 +31,11 @@ class TaskManager {
                     tasks: this.tasks
                 };
                 task.execute(taskOptions);
+                handledMessage = true;
             }
         });
+
+        return handledMessage;
     }
 }
 
