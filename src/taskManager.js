@@ -5,6 +5,12 @@ const shouldRespondToMessage = (message, commands) => {
     return commandList.some(command => message.text.indexOf(command) > -1);
 };
 
+const getMessageArguments = (message, bot) => {
+    const botUserIdString = `<@${bot.user.id}>`;
+    return message.text.split(' ')
+        .filter(messageArgument => messageArgument !== botUserIdString);
+};
+
 class TaskManager {
     constructor(bot, tasks) {
         this.bot = bot;
@@ -14,7 +20,15 @@ class TaskManager {
     handleMessage(message) {
         this.tasks.forEach((task) => {
             if (shouldRespondToMessage(message, task.commands)) {
-                task.execute(this.bot, message, this.tasks);
+                const messageArguments = getMessageArguments(message, this.bot);
+                const taskOptions = {
+                    bot: this.bot,
+                    command: messageArguments[0],
+                    messageArguments: messageArguments.slice(1),
+                    message,
+                    tasks: this.tasks
+                };
+                task.execute(taskOptions);
             }
         });
     }
