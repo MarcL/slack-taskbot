@@ -1,3 +1,7 @@
+<p align="center">
+<img src="media/izac.png" alt="Slack Task Bot" title="Slack Task Bot">
+</p>
+
 # Slack Task Bot
 
 > Slack bot that executes user defined tasks
