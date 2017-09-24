@@ -26,9 +26,17 @@ describe('listTask', () => {
                 channel: givenChannel
             };
 
-            listTask.execute(fakeBot, givenMessage, defaultTaskList);
+            const givenOptions = {
+                bot: fakeBot,
+                message: givenMessage,
+                tasks: defaultTaskList
+            };
 
-            expect(spyRespondInChannel.getCall(0).args[0]).to.equal(givenChannel);
+            listTask.execute(givenOptions);
+
+            expect(spyRespondInChannel.getCall(0).args[0]).to.equal(
+                givenChannel
+            );
         });
     });
 });
