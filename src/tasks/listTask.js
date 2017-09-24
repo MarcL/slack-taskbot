@@ -1,9 +1,9 @@
 import {attachmentMessage, defaultColour} from '../slackMessages';
 
-const showTaskList = (options) => {
+const showTaskList = options => {
     const {bot, message, tasks: taskList} = options;
 
-    const fields = taskList.map((task) => {
+    const fields = taskList.map(task => {
         const commandText = task.commands.join(' | ');
         return {
             title: commandText,
@@ -17,7 +17,7 @@ const showTaskList = (options) => {
         'A list of all the commands that I respond to',
         fields,
         defaultColour,
-        '_Hello, I\'m here to serve_'
+        "_Hello, I'm here to serve_"
     );
     bot.respondInChannel(message.channel, attachment);
 };

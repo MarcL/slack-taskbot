@@ -7,7 +7,8 @@ const shouldRespondToMessage = (message, commands) => {
 
 const getMessageArguments = (message, bot) => {
     const botUserIdString = `<@${bot.user.id}>`;
-    return message.text.split(' ')
+    return message.text
+        .split(' ')
         .filter(messageArgument => messageArgument !== botUserIdString);
 };
 
@@ -20,7 +21,7 @@ class TaskManager {
     handleMessage(message) {
         let handledMessage = false;
 
-        this.tasks.forEach((task) => {
+        this.tasks.forEach(task => {
             if (shouldRespondToMessage(message, task.commands)) {
                 const messageArguments = getMessageArguments(message, this.bot);
                 const taskOptions = {
