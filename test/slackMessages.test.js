@@ -18,11 +18,13 @@ describe('Slack Messages', () => {
     describe('attachmentMessage()', () => {
         const defaultTitle = 'default title';
         const defaultText = 'default text';
-        const defaultFields = [{
-            title: 'default field title',
-            value: 'default field value',
-            short: false
-        }];
+        const defaultFields = [
+            {
+                title: 'default field title',
+                value: 'default field value',
+                short: false
+            }
+        ];
 
         it('message should contain 1 attachment', () => {
             const message = slackMessages.attachmentMessage(
@@ -93,11 +95,13 @@ describe('Slack Messages', () => {
         });
 
         it('message should contain expected fields', () => {
-            const givenFields = [{
-                title: 'given field title',
-                value: 'given field value',
-                short: false
-            }];
+            const givenFields = [
+                {
+                    title: 'given field title',
+                    value: 'given field value',
+                    short: false
+                }
+            ];
 
             const message = slackMessages.attachmentMessage(
                 defaultTitle,
