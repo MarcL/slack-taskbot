@@ -6,7 +6,7 @@ describe('listTask', () => {
     });
 
     it('should contain expected commands', () => {
-        expect(listTask.commands).to.deep.equal(['list', 'commands']);
+        expect(listTask.commands).to.deep.equal(['list', 'commands', 'help']);
     });
 
     describe('when executing task', () => {

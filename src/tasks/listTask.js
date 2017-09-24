@@ -25,7 +25,7 @@ const showTaskList = options => {
 
 const listTask = {
     description: 'Lists all tasks',
-    commands: ['list', 'commands'],
+    commands: ['list', 'commands', 'help'],
     execute: showTaskList
 };
 
